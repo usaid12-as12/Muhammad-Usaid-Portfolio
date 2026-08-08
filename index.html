@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Usaid | Game Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0A0A0F;
+    --card: #12121A;
+    --card2: #1A1A28;
+    --cyan: #00F5FF;
+    --purple: #7B2FFF;
+    --pink: #FF2F7B;
+    --text: #E8E8F0;
+    --muted: #8B8BA7;
+    --border: rgba(0,245,255,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── CANVAS BACKGROUND ── */
+  #bg-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .hero-inner { max-width: 800px; }
+
+  .avail-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 200, 100, 0.1);
+    border: 1px solid rgba(0, 200, 100, 0.35);
+    color: #00C864;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 0.4rem 1.2rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .avail-dot {
+    width: 8px; height: 8px;
+    background: #00C864;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #00C864;
+    animation: blink 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px #00C864; }
+    50% { opacity: 0.4; box-shadow: 0 0 14px #00C864; }
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+    padding: 0.4rem 1.2rem;
+    border-radius: 2px;
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+    animation: pulse-border 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-border {
+    0%, 100% { box-shadow: 0 0 8px rgba(0,245,255,0.3); }
+    50% { box-shadow: 0 0 20px rgba(0,245,255,0.7); }
+  }
+
+  .hero-name {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 4px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title span { color: var(--purple); }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 1.2rem;
+    line-height: 1.8;
+  }
+
+  .hero-quote {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--cyan);
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    border-left: 2px solid var(--purple);
+    padding-left: 1rem;
+    text-align: left;
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    color: #000;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 0.9rem 2.2rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: all 0.3s;
+    font-family: 'Orbitron', monospace;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,245,255,0.4); }
+
+  .btn-secondary {
+    color: var(--cyan);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 0.85rem 2.2rem;
+    border: 1px solid var(--cyan);
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    font-family: 'Orbitron', monospace;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-secondary:hover { background: rgba(0,245,255,0.08); transform: translateY(-3px); }
+
+  /* ── SECTION COMMON ── */
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 6rem 2rem; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .section-line {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    margin-bottom: 3rem;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: rgba(18,18,26,0.5); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text p strong { color: var(--cyan); font-weight: 600; }
+
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--cyan), var(--purple));
+  }
+
+  .stat-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--cyan);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 1px; }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-category {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .skill-category:hover { transform: translateY(-5px); border-color: var(--cyan); }
+
+  .skill-cat-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+  .skill-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(0,245,255,0.06);
+    border: 1px solid rgba(0,245,255,0.2);
+    color: var(--text);
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .skill-tag:hover { background: rgba(0,245,255,0.15); color: var(--cyan); }
+
+  /* ── PROJECTS ── */
+  #projects { background: rgba(18,18,26,0.5); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.8rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+    position: relative;
+  }
+  .project-card:hover { transform: translateY(-8px); border-color: var(--purple); }
+
+  .project-banner {
+    height: 160px;
+    background: linear-gradient(135deg, var(--card2) 0%, rgba(123,47,255,0.3) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-banner::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, var(--card));
+  }
+
+  .project-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.7rem;
+    letter-spacing: 1px;
+    z-index: 2;
+  }
+  .badge-published { background: rgba(0,245,255,0.15); color: var(--cyan); border: 1px solid var(--cyan); }
+  .badge-learning { background: rgba(123,47,255,0.15); color: var(--purple); border: 1px solid var(--purple); }
+
+  .project-body { padding: 1.5rem; }
+
+  .project-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.7rem;
+  }
+
+  .project-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; }
+
+  .project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+  .tech-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    background: rgba(123,47,255,0.15);
+    color: var(--purple);
+    border: 1px solid rgba(123,47,255,0.3);
+  }
+
+  .project-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--cyan);
+    text-decoration: none;
+    letter-spacing: 1px;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: gap 0.2s;
+  }
+  .project-link:hover { gap: 0.7rem; }
+
+  /* ── RESUME ── */
+  .resume-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr;
+    gap: 3rem;
+  }
+
+  .resume-col-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .resume-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--purple);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .resume-item-title { font-weight: 600; color: var(--text); margin-bottom: 0.3rem; font-size: 0.95rem; }
+  .resume-item-sub { font-size: 0.8rem; color: var(--cyan); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.5rem; }
+  .resume-item-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+  .resume-skill-bar { margin-bottom: 1.2rem; }
+  .rsb-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text); margin-bottom: 0.4rem; }
+  .rsb-track { height: 4px; background: var(--card2); border-radius: 2px; overflow: hidden; }
+  .rsb-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1.5s ease;
+  }
+
+  /* ── CONTACT ── */
+  #contact { background: rgba(18,18,26,0.5); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-info-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .contact-icon {
+    width: 44px; height: 44px;
+    background: rgba(0,245,255,0.08);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .contact-info-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; margin-bottom: 0.2rem; }
+  .contact-info-val { font-size: 0.95rem; color: var(--text); }
+  .contact-info-val a { color: var(--cyan); text-decoration: none; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 1px; font-family: 'JetBrains Mono', monospace; }
+  .form-input, .form-textarea {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.9rem 1.2rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--cyan); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+
+  .whatsapp-btn {
+    display: flex; align-items: center; gap: 0.8rem;
+    background: #25D366;
+    color: #fff;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 1px;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: all 0.3s;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+  .whatsapp-btn:hover { background: #20c55e; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(37,211,102,0.4); }
+
+  .form-divider {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .form-divider::before {
+    content: '';
+    position: absolute; top: 50%; left: 0; right: 0;
+    height: 1px; background: var(--border);
+  }
+  .form-divider span {
+    position: relative;
+    background: var(--black);
+    padding: 0 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* ── LEARNING SECTION ── */
+  #learning { background: rgba(18,18,26,0.5); }
+
+  .learning-main {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--cyan);
+    padding: 2rem;
+  }
+
+  .learning-header {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .learning-icon {
+    font-size: 2.5rem;
+    width: 60px; height: 60px;
+    background: rgba(0,245,255,0.08);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .learning-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .learning-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--cyan);
+    letter-spacing: 1px;
+  }
+
+  .learning-badge {
+    margin-left: auto;
+    background: rgba(255,165,0,0.1);
+    border: 1px solid rgba(255,165,0,0.4);
+    color: #FFA500;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.4rem 1rem;
+    letter-spacing: 2px;
+    animation: pulse-border 2s ease-in-out infinite;
+  }
+
+  .learning-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  .learning-item {
+    display: flex;
+    gap: 1rem;
+    background: rgba(0,245,255,0.03);
+    border: 1px solid rgba(0,245,255,0.08);
+    padding: 1.2rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .learning-item:hover {
+    border-color: rgba(0,245,255,0.25);
+    transform: translateY(-3px);
+  }
+
+  .li-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .li-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 0.4rem;
+    letter-spacing: 1px;
+  }
+
+  .li-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .learning-grid { grid-template-columns: 1fr; }
+    .learning-badge { margin-left: 0; }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    position: relative; z-index: 1;
+  }
+  footer span { color: var(--cyan); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1rem; }
+    .about-grid, .resume-wrap, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .section-wrap { padding: 4rem 1.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; }
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">MU.DEV</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#learning">Learning</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="avail-status">
+      <span class="avail-dot"></span> Available for Projects
+    </div>
+    <div class="hero-badge">▶ UNITY GAME DEVELOPER</div>
+    <h1 class="hero-name">Muhammad<br>Usaid</h1>
+    <p class="hero-title">Building <span>Worlds</span> · Writing <span>Code</span> · Shipping <span>Games</span></p>
+    <p class="hero-desc">Junior Unity Game Developer with 1 year of hands-on experience in 2D & 3D game development. Passionate about gameplay systems and building complete, playable experiences.</p>
+    <p class="hero-quote">" A CV is just paper — real mountains are crossed with dedication, not degrees. "</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#resume" class="btn-secondary">Download CV</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="reveal">
+      <p class="section-label">// 01 — ABOUT</p>
+      <h2 class="section-title">Who I Am</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm <strong>Muhammad Usaid</strong>, a Junior Unity Game Developer based in Bahawalpur, Pakistan. Over the past year I've been obsessed with learning the craft — from player movement and collision physics to UI systems and full game loops.</p>
+        <p>I build games to <strong>learn by doing</strong>. Every project I've shipped — from casual 2D runners to endless 3D drivers — has been a chance to understand game systems deeper and push my skills further.</p>
+        <p>Currently pursuing <strong>BSCS at S.E College</strong> (4th Semester, 3.95 SGPA in 1st Semester — Top 3 in class), I balance academics with real-world game dev, including a <strong>published PlayStore title</strong>.</p>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-card">
+          <div class="stat-num">1+</div>
+          <div class="stat-label">Year of Experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Games Built</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Published on PlayStore</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3.95</div>
+          <div class="stat-label">SGPA — Top 3 in Class</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="reveal">
+      <p class="section-label">// 02 — SKILLS</p>
+      <h2 class="section-title">Technical Arsenal</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-category reveal">
+        <div class="skill-cat-title">🎮 GAME DEVELOPMENT</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Unity 2D</span>
+          <span class="skill-tag">Unity 3D</span>
+          <span class="skill-tag">Gameplay Mechanics</span>
+          <span class="skill-tag">Player Movement</span>
+          <span class="skill-tag">Level Design</span>
+          <span class="skill-tag">Game Flow</span>
+        </div>
+      </div>
+      <div class="skill-category reveal">
+        <div class="skill-cat-title">💻 PROGRAMMING</div>
+        <div class="skill-tags">
+          <span class="skill-tag">C#</span>
+          <span class="skill-tag">OOP</span>
+          <span class="skill-tag">Coroutines</span>
+          <span class="skill-tag">Singleton Pattern</span>
+          <span class="skill-tag">Game Manager</span>
+          <span class="skill-tag">Object Pooling</span>
+          <span class="skill-tag">ScriptableObjects</span>
+          <span class="skill-tag">Input System</span>
+          <span class="skill-tag">Raycast</span>
+          <span class="skill-tag">Scene Management</span>
+          <span class="skill-tag">PlayerPrefs</span>
+          <span class="skill-tag">Audio Manager</span>
+          <span class="skill-tag">Animation Controller</span>
+          <span class="skill-tag">Particle Systems</span>
+          <span class="skill-tag">UI Systems</span>
+          <span class="skill-tag">Collision & Physics</span>
+          <span class="skill-tag">HUD Design</span>
+          <span class="skill-tag">Code Debugging</span>
+        </div>
+      </div>
+      <div class="skill-category reveal">
+        <div class="skill-cat-title">🛠️ TOOLS & WORKFLOW</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Unity Editor</span>
+          <span class="skill-tag">ChatGPT</span>
+          <span class="skill-tag">Gemini</span>
+          <span class="skill-tag">Cursor AI</span>
+          <span class="skill-tag">AI-Assisted Dev</span>
+        </div>
+      </div>
+      <div class="skill-category reveal">
+        <div class="skill-cat-title">🕹️ GAME TYPES</div>
+        <div class="skill-tags">
+          <span class="skill-tag">2D Runner</span>
+          <span class="skill-tag">Casual 2D</span>
+          <span class="skill-tag">Casual 3D</span>
+          <span class="skill-tag">Shooting Game</span>
+          <span class="skill-tag">Endless Games</span>
+          <span class="skill-tag">Arcade / Hyper-Casual</span>
+          <span class="skill-tag">Racing</span>
+          <span class="skill-tag">Board & Card Games</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="reveal">
+      <p class="section-label">// 03 — PROJECTS</p>
+      <h2 class="section-title">Games I've Built</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-banner">🐱
+          <span class="project-badge badge-published">✓ PUBLISHED</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Kato Run 2D</h3>
+          <p class="project-desc">Client-based 2D runner game, implemented gameplay mechanics, UI panels, player controls, obstacles, and level flow. Published live on the PlayStore.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 2D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Android</span>
+            <span class="tech-pill">Client Project</span>
+          </div>
+          <a href="#" class="project-link">View on PlayStore →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-banner">🏀
+          <span class="project-badge badge-learning">LEARNING</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Ball-Man 3D</h3>
+          <p class="project-desc">Arcade-style 3D game featuring smooth player mechanics, full scoring system, and polished UI elements. Focus on game feel and responsiveness.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 3D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Arcade</span>
+          </div>
+          <a href="https://mega.nz/file/ewowzAhB" class="project-link" target="_blank">Gameplay Video →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-banner">🚗
+          <span class="project-badge badge-learning">LEARNING</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Endless Car Game 3D</h3>
+          <p class="project-desc">Endless-style 3D driving game with vehicle movement, procedural obstacle spawning, and increasing difficulty curve over time.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 3D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Endless Runner</span>
+          </div>
+          <a href="https://mega.nz/file/ewowzAhB" class="project-link" target="_blank">Gameplay Video →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-banner">🏎️
+          <span class="project-badge badge-learning">IN PROGRESS</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Car Game 3D</h3>
+          <p class="project-desc">Checkpoint Racer with Free Ride Mode currently in development. Implementing open-world movement, checkpoint logic, and race mechanics.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 3D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Racing</span>
+          </div>
+          <a href="https://mega.nz/fm/StIyDTCC" class="project-link" target="_blank">Gameplay Video →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-banner">🎱
+          <span class="project-badge badge-learning">LEARNING</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">8 Ball Pool 2D</h3>
+          <p class="project-desc">Realistic ball physics simulation with cue mechanics, accurate collision system, and a multiplayer-style turn management system.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 2D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Physics</span>
+            <span class="tech-pill">Multiplayer UI</span>
+          </div>
+          <a href="https://mega.nz/fm/StIyDTCC" class="project-link" target="_blank">Gameplay Video →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-banner">🎲
+          <span class="project-badge badge-learning">LEARNING</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Ludo 2D</h3>
+          <p class="project-desc">Classic board game fully built in Unity — dice rolling, token movement logic, safe zones, home path, and complete win condition system.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 2D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Board Game</span>
+            <span class="tech-pill">Turn System</span>
+          </div>
+          <a href="https://mega.nz/fm/StIyDTCC" class="project-link" target="_blank">Gameplay Video →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-banner">🐪
+          <span class="project-badge badge-learning">LEARNING</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Camel Racing 2D</h3>
+          <p class="project-desc">Fun racing game featuring animal characters with speed variation, lap system, and competitive AI behavior for an exciting race experience.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 2D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Racing</span>
+            <span class="tech-pill">AI</span>
+          </div>
+          <a href="https://mega.nz/fm/StIyDTCC" class="project-link" target="_blank">Gameplay Video →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-banner">🃏
+          <span class="project-badge badge-learning">LEARNING</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">UNO 2D</h3>
+          <p class="project-desc">Full UNO card game built in Unity — complete rule implementation, card UI system, turn management, and special card effects (Skip, Reverse, Draw Two, Wild).</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 2D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Card Game</span>
+            <span class="tech-pill">Turn System</span>
+          </div>
+          <a href="https://mega.nz/fm/StIyDTCC" class="project-link" target="_blank">Gameplay Video →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-banner">🍉
+          <span class="project-badge badge-learning">LEARNING</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Fruit Ninja 2D</h3>
+          <p class="project-desc">Swipe-based fruit slicing game with combo system, bomb avoidance, and a dynamic score system. Smooth touch controls and satisfying slice effects.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Unity 2D</span>
+            <span class="tech-pill">C#</span>
+            <span class="tech-pill">Swipe Controls</span>
+            <span class="tech-pill">Arcade</span>
+          </div>
+          <a href="https://mega.nz/fm/StIyDTCC" class="project-link" target="_blank">Gameplay Video →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-wrap">
+    <div class="reveal">
+      <p class="section-label">// 04 — RESUME</p>
+      <h2 class="section-title">My Journey</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="resume-wrap">
+      <!-- Left col -->
+      <div>
+        <div class="reveal">
+          <div class="resume-col-title">EDUCATION</div>
+          <div class="resume-item">
+            <div class="resume-item-title">BSCS — S.E College</div>
+            <div class="resume-item-sub">4th Semester (Ongoing)</div>
+            <div class="resume-item-desc">1st Semester SGPA: 3.95 🏆 — Top 3 students in class</div>
+          </div>
+          <div class="resume-item">
+            <div class="resume-item-title">Intermediate — Pre-Engineering</div>
+            <div class="resume-item-sub">60% Marks</div>
+          </div>
+          <div class="resume-item">
+            <div class="resume-item-title">Matriculation</div>
+            <div class="resume-item-sub">Govt. High School, Noor Pur Nanga</div>
+            <div class="resume-item-desc">74% Marks</div>
+          </div>
+        </div>
+
+
+
+        <div class="reveal" style="margin-top:2rem">
+          <a href="#" class="btn-primary" style="display:inline-block; text-align:center; font-size:0.8rem;">
+            ↓ Download Full CV
+          </a>
+        </div>
+      </div>
+
+      <!-- Right col -->
+      <div>
+        <div class="reveal">
+          <div class="resume-col-title">WORK EXPERIENCE</div>
+          <div class="resume-item">
+            <div class="resume-item-title">Unity 2D Game Developer — Client Project</div>
+            <div class="resume-item-sub">2025 – Present · Kato Run 2D (Published on PlayStore)</div>
+            <div class="resume-item-desc">
+              Implemented all gameplay mechanics, UI panels, player controls, obstacles, and level flow for a client. Handled real-world requirements, feedback-based iterations, and game polish.
+            </div>
+          </div>
+          <div class="resume-item">
+            <div class="resume-item-title">Self-Directed Game Developer</div>
+            <div class="resume-item-sub">2024 – Present · Personal Learning Projects</div>
+            <div class="resume-item-desc">
+              Built multiple 2D and 3D games through hands-on practice and tutorials. Developed understanding of player movement, UI systems, collisions, scoring, and complete game flow. Used AI tools responsibly for debugging and learning.
+            </div>
+          </div>
+          <div class="resume-item">
+            <div class="resume-item-title">3D Game Projects (Learning & Practice)</div>
+            <div class="resume-item-sub">2024 – Present</div>
+            <div class="resume-item-desc">
+              Developed KatoRun (2D), Ball-Man 3D, Endless Car Game 3D, and Car Game 3D (Checkpoint Racer). Each project focused on a different mechanic: obstacle interaction, arcade scoring, endless spawning, and free-roam movement.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="reveal">
+      <p class="section-label">// 05 — CONTACT</p>
+      <h2 class="section-title">Let's Connect</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <p style="color:var(--muted); margin-bottom:2rem; line-height:1.8;">
+          Whether you have a game project, a collaboration idea, or just want to talk Unity — my inbox is always open.
+        </p>
+        <div class="contact-info-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-info-label">PHONE</div>
+            <div class="contact-info-val">03094182359</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-info-label">EMAIL</div>
+            <div class="contact-info-val"><a href="mailto:usaid.dev77@gmail.com">usaid.dev77@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-info-label">LOCATION</div>
+            <div class="contact-info-val">Noor Pur Noronga, Bahawalpur, Pakistan</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">🎮</div>
+          <div>
+            <div class="contact-info-label">GAMEPLAY VIDEOS</div>
+            <div class="contact-info-val"><a href="https://mega.nz/file/ewowzAhB" target="_blank">MEGA Cloud Link →</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <a href="https://wa.me/923094182359" target="_blank" class="whatsapp-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Chat on WhatsApp
+        </a>
+        <div class="form-divider"><span>— or send a message —</span></div>
+        <form class="contact-form" action="https://formspree.io/f/xrevlyqr" method="POST" id="contactForm">
+          <div class="form-group">
+            <label class="form-label">// NAME</label>
+            <input type="text" name="name" class="form-input" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">// EMAIL</label>
+            <input type="email" name="email" class="form-input" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">// MESSAGE</label>
+            <textarea name="message" class="form-textarea" placeholder="Tell me about your project..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="align-self:flex-start">Send Message</button>
+          <p id="formSuccess" style="display:none; color:var(--cyan); font-family:'JetBrains Mono',monospace; font-size:0.85rem; margin-top:1rem;">✓ Message sent! I'll get back to you soon.</p>
+          <p id="formError" style="display:none; color:#ff4444; font-family:'JetBrains Mono',monospace; font-size:0.85rem; margin-top:1rem;">✗ Something went wrong. Please try again.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENTLY LEARNING -->
+<section id="learning">
+  <div class="section-wrap">
+    <div class="reveal">
+      <p class="section-label">// 06 — CURRENTLY LEARNING</p>
+      <h2 class="section-title">Leveling Up</h2>
+      <div class="section-line"></div>
+      <p style="color:var(--muted); margin-bottom:2.5rem; max-width:600px; line-height:1.8;">
+        Always pushing beyond the basics. Currently deep-diving into advanced game systems — building a full <strong style="color:var(--cyan)">TPS Shooter</strong> with stealth mechanics from scratch.
+      </p>
+    </div>
+
+    <div class="learning-main reveal">
+      <div class="learning-header">
+        <div class="learning-icon">🎯</div>
+        <div>
+          <div class="learning-title">TPS Shooter + Stealth System</div>
+          <div class="learning-sub">Unity 3D · Advanced Project · In Progress</div>
+        </div>
+        <div class="learning-badge">IN PROGRESS</div>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-item">
+          <div class="li-icon">🎬</div>
+          <div class="li-content">
+            <div class="li-title">3D Character Animation</div>
+            <div class="li-desc">Full body animation system with blend trees and state machines for smooth movement transitions</div>
+          </div>
+        </div>
+        <div class="learning-item">
+          <div class="li-icon">🦴</div>
+          <div class="li-content">
+            <div class="li-title">Animation Rigging</div>
+            <div class="li-desc">Bone-based rigging setup for realistic character movement, IK (Inverse Kinematics) integration</div>
+          </div>
+        </div>
+        <div class="learning-item">
+          <div class="li-icon">📚</div>
+          <div class="li-content">
+            <div class="li-title">Animation Layers</div>
+            <div class="li-desc">Multi-layer animation system — upper body weapon handling while lower body handles movement independently</div>
+          </div>
+        </div>
+        <div class="learning-item">
+          <div class="li-icon">🔫</div>
+          <div class="li-content">
+            <div class="li-title">Weapon System</div>
+            <div class="li-desc">Complete weapon system — shooting mechanics, reload animations, weapon switching, and ammo management</div>
+          </div>
+        </div>
+        <div class="learning-item">
+          <div class="li-icon">🤖</div>
+          <div class="li-content">
+            <div class="li-title">Enemy AI & Intelligent Movement</div>
+            <div class="li-desc">Smart enemy behavior — patrol, detect, chase, attack states using NavMesh and AI decision trees</div>
+          </div>
+        </div>
+        <div class="learning-item">
+          <div class="li-icon">🥷</div>
+          <div class="li-content">
+            <div class="li-title">Stealth System</div>
+            <div class="li-desc">Full stealth mechanics — line of sight detection, noise system, cover system, and enemy awareness levels</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Crafted with <span>♥</span> by Muhammad Usaid · <span>Game Developer</span> · 2025</p>
+</footer>
+
+<script>
+// ── MATRIX / CODE RAIN CANVAS ──
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const chars = '01アイウエオカキクゲームABCDEF{}[]<>/\\;:';
+const fontSize = 13;
+let cols, drops;
+
+function initDrops() {
+  cols = Math.floor(canvas.width / fontSize);
+  drops = Array(cols).fill(1);
+}
+initDrops();
+
+function draw() {
+  ctx.fillStyle = 'rgba(10,10,15,0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.font = fontSize + 'px JetBrains Mono, monospace';
+
+  drops.forEach((y, i) => {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    const brightness = Math.random();
+    if (brightness > 0.98) {
+      ctx.fillStyle = '#fff';
+    } else if (brightness > 0.9) {
+      ctx.fillStyle = '#00F5FF';
+    } else {
+      ctx.fillStyle = 'rgba(0,245,255,0.3)';
+    }
+    ctx.fillText(char, i * fontSize, y * fontSize);
+    if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  });
+}
+
+setInterval(draw, 50);
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Animate skill bars
+      e.target.querySelectorAll('.rsb-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Skill bars that are already visible on load
+document.querySelectorAll('.rsb-fill').forEach(bar => {
+  if (!bar.closest('.reveal')) bar.style.width = bar.dataset.width + '%';
+});
+
+// ── FORM SUBMIT ──
+const form = document.getElementById('contactForm');
+if (form) {
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        document.getElementById('formSuccess').style.display = 'block';
+        document.getElementById('formError').style.display = 'none';
+        form.reset();
+        btn.textContent = '✓ Sent!';
+      } else {
+        throw new Error();
+      }
+    } catch {
+      document.getElementById('formError').style.display = 'block';
+      document.getElementById('formSuccess').style.display = 'none';
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
+    }
+  });
+}
+
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 200) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? '#00F5FF' : '';
+  });
+});
+</script>
+</body>
+</html>
