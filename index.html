@@ -434,8 +434,24 @@
 
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: 1fr;
       gap: 1.8rem;
+    }
+
+    @media (min-width: 768px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .project-hidden {
+      display: none !important;
     }
 
     .project-card {
@@ -509,6 +525,11 @@
       color: var(--muted);
       line-height: 1.7;
       margin-bottom: 1.2rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .project-tech {
@@ -541,6 +562,278 @@
 
     .project-link:hover {
       gap: 0.7rem;
+    }
+
+    .btn-details {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.6rem;
+      border: 1px solid var(--border);
+      background: rgba(0, 245, 255, 0.05);
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 1px;
+    }
+
+    .btn-details:hover {
+      background: rgba(0, 245, 255, 0.15);
+      border-color: var(--cyan);
+    }
+
+    .projects-footer {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    /* ── PROJECT MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 15, 0.9);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-container {
+      background: var(--card);
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 30px rgba(0, 245, 255, 0.1);
+      width: 100%;
+      max-width: 1000px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .modal-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modal-container::-webkit-scrollbar-thumb {
+      background: var(--purple);
+    }
+
+    .modal-overlay.active .modal-container {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1.8rem;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.3s;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: var(--pink);
+    }
+
+    .modal-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 768px) {
+      .modal-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .modal-left {
+      padding: 2rem;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    @media (min-width: 768px) {
+      .modal-left {
+        border-right: 1px solid var(--border);
+        border-bottom: none;
+      }
+    }
+
+    .modal-right {
+      padding: 2rem;
+    }
+
+    .modal-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-main-image {
+      width: 100%;
+      height: 250px;
+      background: linear-gradient(135deg, var(--card2) 0%, rgba(123, 47, 255, 0.3) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    @media (min-width: 768px) {
+      .modal-main-image {
+        height: 350px;
+      }
+    }
+
+    .modal-main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: rgba(10, 10, 15, 0.8);
+    }
+
+    .placeholder-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .placeholder-icon {
+      font-size: 4rem;
+    }
+
+    .placeholder-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .modal-thumbnails {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+      gap: 0.8rem;
+    }
+
+    .modal-thumb {
+      height: 70px;
+      background: linear-gradient(135deg, var(--card2) 0%, rgba(123, 47, 255, 0.15) 100%);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .modal-thumb:hover, .modal-thumb.active {
+      border-color: var(--cyan);
+    }
+    
+    .modal-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-thumb .placeholder-icon {
+      font-size: 1.5rem;
+    }
+
+    .modal-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.5rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-badge {
+      display: inline-block;
+      margin-bottom: 1.2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .modal-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-section-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--cyan);
+      letter-spacing: 2px;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .modal-features {
+      margin-bottom: 2rem;
+    }
+
+    .modal-features ul {
+      list-style: none;
+    }
+
+    .modal-features li {
+      position: relative;
+      padding-left: 1.2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .modal-features li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    .modal-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .modal-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
 
     /* ── RESUME ── */
@@ -765,6 +1058,7 @@
       border: 1px solid var(--border);
       border-top: 3px solid var(--cyan);
       padding: 2rem;
+      margin-bottom: 2rem;
     }
 
     .learning-header {
@@ -1096,12 +1390,18 @@
       </div>
       <div class="projects-grid">
 
-        <div class="project-card reveal">
-          <div class="project-banner">🐱
+        <div class="project-card reveal" data-images="images/katorun/main.png, images/katorun/image1.png, images/katorun/image2.png, images/katorun/image5.png">
+          <div class="project-banner">
+            <img src="images/katorun/main.png" alt="Kato Run 2D" style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
             <span class="project-badge badge-published">✓ PUBLISHED</span>
           </div>
           <div class="project-body">
             <h3 class="project-title">Kato Run 2D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Client-based 2D runner game, implemented gameplay mechanics, UI panels, player
               controls, obstacles, and level flow. Published live on the PlayStore.</p>
             <div class="project-tech">
@@ -1120,6 +1420,11 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">Ball-Man 3D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Arcade-style 3D game featuring smooth player mechanics, full scoring system, and
               polished UI elements. Focus on game feel and responsiveness.</p>
             <div class="project-tech">
@@ -1137,6 +1442,11 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">Endless Car Game 3D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Endless-style 3D driving game with vehicle movement, procedural obstacle spawning,
               and increasing difficulty curve over time.</p>
             <div class="project-tech">
@@ -1154,6 +1464,11 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">Car Game 3D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Checkpoint Racer with Free Ride Mode currently in development. Implementing
               open-world movement, checkpoint logic, and race mechanics.</p>
             <div class="project-tech">
@@ -1171,6 +1486,11 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">8 Ball Pool 2D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Realistic ball physics simulation with cue mechanics, accurate collision system, and
               a multiplayer-style turn management system.</p>
             <div class="project-tech">
@@ -1189,6 +1509,11 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">Ludo 2D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Classic board game fully built in Unity — dice rolling, token movement logic, safe
               zones, home path, and complete win condition system.</p>
             <div class="project-tech">
@@ -1207,6 +1532,11 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">Camel Racing 2D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Fun racing game featuring animal characters with speed variation, lap system, and
               competitive AI behavior for an exciting race experience.</p>
             <div class="project-tech">
@@ -1225,6 +1555,11 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">UNO 2D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Full UNO card game built in Unity — complete rule implementation, card UI system,
               turn management, and special card effects (Skip, Reverse, Draw Two, Wild).</p>
             <div class="project-tech">
@@ -1243,6 +1578,11 @@
           </div>
           <div class="project-body">
             <h3 class="project-title">Fruit Ninja 2D</h3>
+            <ul class="project-features" style="display: none;">
+              <li>Smooth player mechanics and collision physics</li>
+              <li>Custom UI panels and menus</li>
+              <li>Polished game flow and progression</li>
+            </ul>
             <p class="project-desc">Swipe-based fruit slicing game with combo system, bomb avoidance, and a dynamic
               score system. Smooth touch controls and satisfying slice effects.</p>
             <div class="project-tech">
@@ -1255,6 +1595,9 @@
           </div>
         </div>
 
+      </div>
+      <div class="projects-footer reveal">
+        <button id="show-more-projects" class="btn-secondary">Show More Projects</button>
       </div>
     </div>
   </section>
@@ -1425,8 +1768,10 @@
         <h2 class="section-title">Leveling Up</h2>
         <div class="section-line"></div>
         <p style="color:var(--muted); margin-bottom:2.5rem; max-width:600px; line-height:1.8;">
-          Always pushing beyond the basics. Currently deep-diving into advanced game systems — building a full <strong
-            style="color:var(--cyan)">TPS Shooter</strong> with stealth mechanics from scratch.
+          Always pushing beyond the basics. Currently deep-diving into advanced game systems — building a <strong
+            style="color:var(--cyan)">TPS Shooter</strong>, a <strong
+            style="color:var(--cyan)">3D Market Simulator</strong>, and a <strong
+            style="color:var(--cyan)">2D Arrow Puzzle Game</strong> from scratch.
         </p>
       </div>
 
@@ -1491,12 +1836,157 @@
           </div>
         </div>
       </div>
+
+      <div class="learning-main reveal">
+        <div class="learning-header">
+          <div class="learning-icon">🛒</div>
+          <div>
+            <div class="learning-title">3D Market Simulator Game</div>
+            <div class="learning-sub">Unity 3D · Simulation & Economy System · In Progress</div>
+          </div>
+          <div class="learning-badge">IN PROGRESS</div>
+        </div>
+
+        <div class="learning-grid">
+          <div class="learning-item">
+            <div class="li-icon">🏪</div>
+            <div class="li-content">
+              <div class="li-title">Store Layout & Interactivity</div>
+              <div class="li-desc">Dynamic 3D supermarket environment with interactive shelves, product placement, and store customization</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">📦</div>
+            <div class="li-content">
+              <div class="li-title">Inventory & Stock System</div>
+              <div class="li-desc">Product ordering, unboxing mechanics, restocking workflow, price tag setting, and supply management</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">💳</div>
+            <div class="li-content">
+              <div class="li-title">Checkout & Cashier Mechanics</div>
+              <div class="li-desc">Interactive barcode scanning, cash register change calculations, card payments, and billing flow</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">🚶‍♂️</div>
+            <div class="li-content">
+              <div class="li-title">Customer AI & Behavior</div>
+              <div class="li-desc">Smart NPC shoppers with NavMesh pathfinding, item selection, queueing at checkout, and satisfaction meters</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">📈</div>
+            <div class="li-content">
+              <div class="li-title">Store Economy & Finances</div>
+              <div class="li-desc">Daily profit & loss tracking, store license unlocks, expanding inventory, and operational overhead management</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">🖐️</div>
+            <div class="li-content">
+              <div class="li-title">Physics & Carrying Mechanics</div>
+              <div class="li-desc">First-person box carrying, object interaction physics, shelf snapping, and smooth pickup/drop systems</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="learning-main reveal">
+        <div class="learning-header">
+          <div class="learning-icon">🏹</div>
+          <div>
+            <div class="learning-title">2D Arrow Puzzle Game</div>
+            <div class="learning-sub">Unity 2D · Puzzle Mechanics & Path Solver · In Progress</div>
+          </div>
+          <div class="learning-badge">IN PROGRESS</div>
+        </div>
+
+        <div class="learning-grid">
+          <div class="learning-item">
+            <div class="li-icon">↗️</div>
+            <div class="li-content">
+              <div class="li-title">Grid & Movement Logic</div>
+              <div class="li-desc">Custom tile-based grid system, directional arrow movement, collision detection, and boundary checks</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">🔄</div>
+            <div class="li-content">
+              <div class="li-title">Rotation & Chain Reactions</div>
+              <div class="li-desc">Interactive arrow rotation triggers, directional path redirectors, and cascading chain reaction mechanisms</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">🧩</div>
+            <div class="li-content">
+              <div class="li-title">Level Progression & Difficulty</div>
+              <div class="li-desc">Procedural level loading, obstacle placement, move limits, and balanced puzzle difficulty curve</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">🧠</div>
+            <div class="li-content">
+              <div class="li-title">Win Condition & Solver Logic</div>
+              <div class="li-desc">Automated puzzle state evaluation, target tile alignment verification, and step-by-step path validation</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">⭐</div>
+            <div class="li-content">
+              <div class="li-title">Scoring & Move Counter</div>
+              <div class="li-desc">Efficiency rating system, dynamic star awards, move counter tracking, and undo/reset functionality</div>
+            </div>
+          </div>
+          <div class="learning-item">
+            <div class="li-icon">✨</div>
+            <div class="li-content">
+              <div class="li-title">Juicy FX & Polish</div>
+              <div class="li-desc">Smooth arrow sliding animations, particle pop effects on solve, satisfying audio cues, and responsive UI</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <footer>
     <p>Crafted with <span>♥</span> by Muhammad Usaid · <span>Game Developer</span> · 2025</p>
   </footer>
+
+  <!-- Project Modal Container -->
+  <div class="modal-overlay" id="project-modal">
+    <div class="modal-container">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="modal-layout">
+        <!-- Left Side: Gallery -->
+        <div class="modal-left">
+          <div class="modal-gallery">
+            <div class="modal-main-image" id="modal-main-view"></div>
+            <div class="modal-thumbnails" id="modal-thumbnails-view"></div>
+          </div>
+        </div>
+        <!-- Right Side: Content -->
+        <div class="modal-right">
+          <h3 class="modal-title" id="modal-title"></h3>
+          <div id="modal-badge-container"></div>
+          <div class="modal-desc" id="modal-desc"></div>
+          
+          <div class="modal-section-title">Technologies</div>
+          <div class="modal-tech" id="modal-tech"></div>
+          
+          <div class="modal-section-title">Key Features</div>
+          <div class="modal-features">
+            <ul id="modal-features-list"></ul>
+          </div>
+          
+          <div class="modal-section-title">Links</div>
+          <div class="modal-links" id="modal-links"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     // ── MATRIX / CODE RAIN CANVAS ──
@@ -1606,6 +2096,172 @@
       navLinks.forEach(a => {
         a.style.color = a.getAttribute('href') === '#' + current ? '#00F5FF' : '';
       });
+    });
+
+    // ── PROJECTS LOGIC ──
+    const projectCards = document.querySelectorAll('.project-card');
+    const showMoreBtn = document.getElementById('show-more-projects');
+    const projectModal = document.getElementById('project-modal');
+    const modalCloseBtn = document.getElementById('modal-close');
+
+    // 1. Initial State: Hide projects beyond index 5 (6 projects)
+    let projectsShowingAll = false;
+    projectCards.forEach((card, index) => {
+      if (index > 5) {
+        card.classList.add('project-hidden');
+      }
+      
+      // 2. Inject "View Details" button dynamically
+      const viewDetailsBtn = document.createElement('button');
+      viewDetailsBtn.className = 'btn-details';
+      viewDetailsBtn.textContent = 'View Details';
+      
+      // Stop propagation if links are clicked so we don't double fire
+      const links = card.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', (e) => e.stopPropagation());
+      });
+
+      // Handle card click or button click to open modal
+      const openModal = () => {
+        // Extract data
+        const title = card.querySelector('.project-title').textContent;
+        const descHtml = card.querySelector('.project-desc').innerHTML;
+        const techHtml = card.querySelector('.project-tech').innerHTML;
+        const featuresEl = card.querySelector('.project-features');
+        const featuresHtml = featuresEl ? featuresEl.innerHTML : '';
+        const linksHtml = Array.from(card.querySelectorAll('.project-link')).map(l => l.outerHTML).join('');
+        
+        // We isolate the emoji/image from the banner and keep the badge separately
+        const bannerClone = card.querySelector('.project-banner').cloneNode(true);
+        const badge = bannerClone.querySelector('.project-badge');
+        if(badge) badge.remove();
+        
+        const rawIcon = bannerClone.innerHTML.trim();
+        
+        // Setup Images/Placeholders
+        const dataImages = card.getAttribute('data-images');
+        let images = [];
+        if (dataImages) {
+          images = dataImages.split(',').map(s => s.trim());
+        }
+
+        const mainView = document.getElementById('modal-main-view');
+        const thumbView = document.getElementById('modal-thumbnails-view');
+        mainView.innerHTML = '';
+        thumbView.innerHTML = '';
+
+        const renderPlaceholder = (iconStr) => {
+          return `<div class="placeholder-content">
+                    <div class="placeholder-icon">${iconStr}</div>
+                    <div class="placeholder-text">Project Screenshot</div>
+                  </div>`;
+        };
+
+        if (images.length > 0) {
+          mainView.innerHTML = `<img src="${images[0]}" alt="${title}">`;
+          images.forEach((imgSrc, i) => {
+             let thumb = document.createElement('div');
+             thumb.className = 'modal-thumb' + (i===0 ? ' active' : '');
+             thumb.innerHTML = `<img src="${imgSrc}" alt="Thumbnail ${i+1}">`;
+             thumb.addEventListener('click', () => {
+                mainView.innerHTML = `<img src="${imgSrc}" alt="${title}">`;
+                thumbView.querySelectorAll('.modal-thumb').forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+             });
+             thumbView.appendChild(thumb);
+          });
+        } else {
+          // HTML Placeholders
+          mainView.innerHTML = renderPlaceholder(rawIcon);
+          for(let i=0; i<3; i++) {
+             let thumb = document.createElement('div');
+             thumb.className = 'modal-thumb' + (i===0 ? ' active' : '');
+             thumb.innerHTML = renderPlaceholder(rawIcon);
+             thumb.addEventListener('click', () => {
+                mainView.innerHTML = renderPlaceholder(rawIcon);
+                thumbView.querySelectorAll('.modal-thumb').forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+             });
+             thumbView.appendChild(thumb);
+          }
+        }
+        
+        // Populate Modal Content
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-desc').innerHTML = descHtml;
+        document.getElementById('modal-tech').innerHTML = techHtml;
+        document.getElementById('modal-features-list').innerHTML = featuresHtml;
+        document.getElementById('modal-links').innerHTML = linksHtml;
+        
+        const badgeContainer = document.getElementById('modal-badge-container');
+        badgeContainer.innerHTML = '';
+        if(card.querySelector('.project-badge')) {
+          const badgeClone = card.querySelector('.project-badge').cloneNode(true);
+          badgeClone.className = badgeClone.className.replace('project-badge', 'modal-badge');
+          badgeContainer.appendChild(badgeClone);
+        }
+
+        projectModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+
+      viewDetailsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModal();
+      });
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', openModal);
+
+      card.querySelector('.project-body').appendChild(viewDetailsBtn);
+    });
+
+    if (projectCards.length <= 6 && showMoreBtn) {
+      showMoreBtn.style.display = 'none';
+    }
+
+    // 3. Show More functionality
+    if (showMoreBtn) {
+      showMoreBtn.addEventListener('click', () => {
+        if (!projectsShowingAll) {
+          projectCards.forEach((card, index) => {
+            if (index > 5) {
+              card.classList.remove('project-hidden');
+            }
+          });
+          showMoreBtn.textContent = 'Show Less Projects';
+          projectsShowingAll = true;
+        } else {
+          projectCards.forEach((card, index) => {
+            if (index > 5) {
+              card.classList.add('project-hidden');
+            }
+          });
+          showMoreBtn.textContent = 'Show More Projects';
+          projectsShowingAll = false;
+          // scroll back to projects section
+          document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+
+    // 4. Modal Close Logic
+    const closeModal = () => {
+      projectModal.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+    if (projectModal) {
+      projectModal.addEventListener('click', (e) => {
+        if (e.target === projectModal) closeModal();
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && projectModal && projectModal.classList.contains('active')) {
+        closeModal();
+      }
     });
   </script>
 </body>
